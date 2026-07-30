@@ -1,8 +1,15 @@
 /* QHSE Inspectietool — service worker
    Cachet de volledige app-shell zodat de app ook zonder internetverbinding
-   volledig bruikbaar is (inclusief PDF-export, want jsPDF wordt ook gecached). */
+   volledig bruikbaar is (inclusief PDF-export, want jsPDF wordt ook gecached).
 
-const CACHE_NAME = 'qhse-inspectie-v2';
+   Strategie:
+   - Eigen app-bestanden (html/css/js/json): NETWERK-EERST. Zo komt elke update
+     die je op GitHub zet meteen door zodra je online bent. Enkel als er geen
+     internet is, valt de app terug op de laatst gecachete versie.
+   - Externe CDN-bestanden (jsPDF): CACHE-EERST, want die wijzigen zelden en
+     dit bespaart dataverbruik / werkt betrouwbaarder offline. */
+
+const CACHE_NAME = 'qhse-inspectie-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -35,16 +42,30 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request)
+  const isSameOrigin = new URL(event.request.url).origin === self.location.origin;
+
+  if (isSameOrigin) {
+    // Netwerk-eerst: altijd de nieuwste versie ophalen als er internet is.
+    event.respondWith(
+      fetch(event.request)
         .then((response) => {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
           return response;
         })
-        .catch(() => cached);
-    })
-  );
+        .catch(() => caches.match(event.request))
+    );
+  } else {
+    // Cache-eerst voor externe CDN-libraries.
+    event.respondWith(
+      caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return fetch(event.request).then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
+          return response;
+        });
+      })
+    );
+  }
 });
