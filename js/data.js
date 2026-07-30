@@ -5,6 +5,12 @@
  * Wil je later een vraag toevoegen, aanpassen of verwijderen?
  * Doe dat hier — de rest van de app leest deze lijst automatisch uit.
  *
+ * NUMMERING: elk onderdeel (sectie) heeft een volgnummer (1, 2, 3, ...) dat
+ * ook in de sectienaam staat (bv. "2. PBM's"). De vragen in die sectie
+ * krijgen dat sectienummer + een letter (2a, 2b, 2c, ...). Bij een nieuw
+ * onderdeel begint de letter opnieuw bij "a" met het volgende sectienummer.
+ * Deze structuur wordt consequent toegepast op alle 4 de checklists.
+ *
  * Structuur per checklist:
  * {
  *   id: 'engineer',
@@ -19,7 +25,7 @@
  *
  * VELDEN PER VRAAG:
  *   id                → intern, uniek, NIET hergebruiken (zo blijven oude inspecties leesbaar)
- *   num               → weergavenummer (bv. '1a'), puur cosmetisch, mag je vrij aanpassen
+ *   num               → weergavenummer (bv. '2a'), puur cosmetisch, mag je vrij aanpassen
  *   text              → de vraag zelf
  *   hint              → optionele kleine grijze hulptekst onder de vraag
  *   checkboxOptions   → optionele lijst keuzevakjes die ONDER de vraag getoond worden
@@ -44,10 +50,10 @@ const QHSE_CHECKLISTS = [
     sample: false,
     docControl: {
       code: 'WPI_EN001',
-      naam: 'Henk Driessen',
-      rev: '01-05-2025',
-      versie: '1.0',
-      beheerder: 'QHSE manager',
+      naam: 'Hamdaoui Abdelkerim',
+      rev: '1-08-2026',
+      versie: '1.3',
+      beheerder: 'QHSE advisor',
       docTitle: 'Checklist Engineer'
     },
     meta: [
@@ -61,7 +67,7 @@ const QHSE_CHECKLISTS = [
     ],
     sections: [
       {
-        name: 'Voorbereiding & communicatie',
+        name: '1. Voorbereiding & communicatie',
         questions: [
           { id: 'e01', num: '1a', text: 'Is er voorafgaand contact geweest met de controlekamer?' },
           { id: 'e02', num: '1b', text: 'Is de laad-/losplanning gekend en bevestigd?' },
@@ -72,58 +78,58 @@ const QHSE_CHECKLISTS = [
         ]
       },
       {
-        name: 'Materiaal & keuring',
+        name: '2. Materiaal & keuring',
         questions: [
-          { id: 'e07', num: '1g', text: 'Is de pompset visueel nagekeken (lekken, schade, bevestiging)?' },
-          { id: 'e08', num: '1h', text: 'Is de keuring van de pompset nog geldig (cert. nr. gecontroleerd)?' },
-          { id: 'e09', num: '1i', text: 'Is slang 1 gekeurd conform het certificaatnummer hierboven?', hint: 'Zie keuring/foto bij "Gebruikte slangen" onder Gegevens.' },
-          { id: 'e10', num: '1j', text: 'Is slang 2 gekeurd conform het certificaatnummer hierboven? (NVT indien niet gebruikt)' },
-          { id: 'e11', num: '1k', text: 'Is slang 3 gekeurd conform het certificaatnummer hierboven? (NVT indien niet gebruikt)' },
-          { id: 'e12', num: '1l', text: 'Is slang 4 gekeurd conform het certificaatnummer hierboven? (NVT indien niet gebruikt)' },
-          { id: 'e13', num: '1m', text: 'Zijn de koppelingen/flenzen van de slangen in goede staat (geen corrosie, vervorming)?' },
-          { id: 'e14', num: '1n', text: 'Is aarding / potentiaalvereffening voorzien en gecontroleerd?' }
+          { id: 'e07', num: '2a', text: 'Is de pompset visueel nagekeken (lekken, schade, bevestiging)?' },
+          { id: 'e08', num: '2b', text: 'Is de keuring van de pompset nog geldig (cert. nr. gecontroleerd)?' },
+          { id: 'e09', num: '2c', text: 'Is slang 1 gekeurd conform het certificaatnummer hierboven?', hint: 'Zie keuring/foto bij "Gebruikte slangen" onder Gegevens.' },
+          { id: 'e10', num: '2d', text: 'Is slang 2 gekeurd conform het certificaatnummer hierboven? (NVT indien niet gebruikt)' },
+          { id: 'e11', num: '2e', text: 'Is slang 3 gekeurd conform het certificaatnummer hierboven? (NVT indien niet gebruikt)' },
+          { id: 'e12', num: '2f', text: 'Is slang 4 gekeurd conform het certificaatnummer hierboven? (NVT indien niet gebruikt)' },
+          { id: 'e13', num: '2g', text: 'Zijn de koppelingen/flenzen van de slangen in goede staat (geen corrosie, vervorming)?' },
+          { id: 'e14', num: '2h', text: 'Is aarding / potentiaalvereffening voorzien en gecontroleerd?' }
         ]
       },
       {
-        name: "PBM's",
+        name: "3. PBM's",
         questions: [
           {
-            id: 'e15', num: '1o', text: "Draagt de engineer de verplichte PBM's?",
+            id: 'e15', num: '3a', text: "Draagt de engineer de verplichte PBM's?",
             checkboxOptions: ['Helm', 'Veiligheidsbril', 'Handschoenen chemie', 'Veiligheidsschoenen', 'Overall chemie', 'Volgelaatsmasker met ABEK-filter']
           },
-          { id: 'e16', num: '1p', text: 'Is aangepaste PBM voor het product aanwezig (chemisch pak, gelaatsscherm indien nodig)?' },
-          { id: 'e17', num: '1q', text: 'Is een gasmeter/detectieapparatuur aanwezig en gekalibreerd indien vereist?' }
+          { id: 'e16', num: '3b', text: 'Is aangepaste PBM voor het product aanwezig (chemisch pak, gelaatsscherm indien nodig)?' },
+          { id: 'e17', num: '3c', text: 'Is een gasmeter/detectieapparatuur aanwezig en gekalibreerd indien vereist?' }
         ]
       },
       {
-        name: 'Noodsituatievoorzieningen',
+        name: '4. Noodsituatievoorzieningen',
         questions: [
-          { id: 'e18', num: '1r', text: 'Zijn nooddouche/oogdouche bereikbaar en functioneel?' },
-          { id: 'e19', num: '1s', text: 'Is blusmateriaal aanwezig en bereikbaar nabij de laad-/losplaats?' },
-          { id: 'e20', num: '1t', text: 'Is een spill kit / absorptiemateriaal aanwezig?' },
-          { id: 'e21', num: '1u', text: 'Is de pomp opgesteld in een lekbak?' },
-          { id: 'e22', num: '1v', text: 'Zijn vluchtwegen op de terminal vrij en gekend door de engineer?' },
-          { id: 'e23', num: '1w', text: 'Is het noodnummer / de alarmprocedure gekend door de engineer?' }
+          { id: 'e18', num: '4a', text: 'Zijn nooddouche/oogdouche bereikbaar en functioneel?' },
+          { id: 'e19', num: '4b', text: 'Is blusmateriaal aanwezig en bereikbaar nabij de laad-/losplaats?' },
+          { id: 'e20', num: '4c', text: 'Is een spill kit / absorptiemateriaal aanwezig?' },
+          { id: 'e21', num: '4d', text: 'Is de pomp opgesteld in een lekbak?' },
+          { id: 'e22', num: '4e', text: 'Zijn vluchtwegen op de terminal vrij en gekend door de engineer?' },
+          { id: 'e23', num: '4f', text: 'Is het noodnummer / de alarmprocedure gekend door de engineer?' }
         ]
       },
       {
-        name: 'Uitvoering',
+        name: '5. Uitvoering',
         questions: [
-          { id: 'e24', num: '1x', text: 'Is de opstelling van de slangen correct en veilig (geen knikken, voldoende ondersteuning)?' },
-          { id: 'e25', num: '1y', text: 'Is de verbinding schip/voertuig-wal correct gecontroleerd vóór opstart?' },
-          { id: 'e26', num: '1z', text: 'Is er communicatie met de planning gerelateerd aan de job?' },
-          { id: 'e27', num: '1aa', text: 'Is de WIK of SDS beschikbaar?' },
-          { id: 'e28', num: '1ab', text: 'Is er een incident gebeurd?' }
+          { id: 'e24', num: '5a', text: 'Is de opstelling van de slangen correct en veilig (geen knikken, voldoende ondersteuning)?' },
+          { id: 'e25', num: '5b', text: 'Is de verbinding schip/voertuig-wal correct gecontroleerd vóór opstart?' },
+          { id: 'e26', num: '5c', text: 'Is er communicatie met de planning gerelateerd aan de job?' },
+          { id: 'e27', num: '5d', text: 'Is de WIK of SDS beschikbaar?' },
+          { id: 'e28', num: '5e', text: 'Is er een incident gebeurd?' }
         ]
       },
       {
-        name: 'Transport (indien engineer met vaten rijdt)',
+        name: '6. Transport (indien engineer met vaten rijdt)',
         questions: [
-          { id: 'e29', num: '1ac', text: 'Is het ADR-certificaat van de engineer/chauffeur geldig? (zie ook checklist WPI ADR)' },
-          { id: 'e30', num: '1ad', text: 'Is de lading (vaten) correct gezekerd voor transport naar de job?' },
-          { id: 'e31', num: '1ae', text: 'Is de CMR correct ingevuld?' },
-          { id: 'e32', num: '1af', text: 'Zijn de labels aangebracht volgens transport ADR?' },
-          { id: 'e33', num: '1ag', text: 'Zijn de oranje schilden opengezet wanneer nodig?' }
+          { id: 'e29', num: '6a', text: 'Is het ADR-certificaat van de engineer/chauffeur geldig? (zie ook checklist WPI ADR)' },
+          { id: 'e30', num: '6b', text: 'Is de lading (vaten) correct gezekerd voor transport naar de job?' },
+          { id: 'e31', num: '6c', text: 'Is de CMR correct ingevuld?' },
+          { id: 'e32', num: '6d', text: 'Zijn de labels aangebracht volgens transport ADR?' },
+          { id: 'e33', num: '6e', text: 'Zijn de oranje schilden opengezet wanneer nodig?' }
         ]
       }
     ]
@@ -139,10 +145,10 @@ const QHSE_CHECKLISTS = [
     color: '#2a6f8c',
     docControl: {
       code: 'WPI_WHS001',
-      naam: 'Henk Driessen',
-      rev: '01-05-2025',
-      versie: '1.0',
-      beheerder: 'QHSE manager',
+      naam: 'Hamdaoui Abdelkerim',
+      rev: '1-08-2026',
+      versie: '1.3',
+      beheerder: 'QHSE advisor',
       docTitle: 'Checklist Warehouse'
     },
     sample: true,
@@ -175,47 +181,47 @@ const QHSE_CHECKLISTS = [
     ],
     sections: [
       {
-        name: 'Algemene infrastructuur',
+        name: '1. Algemene infrastructuur',
         questions: [
-          { id: 'w01', text: 'Zijn nooduitgangen vrij en duidelijk gemarkeerd?' },
-          { id: 'w02', text: 'Zijn doorgangen en vluchtwegen vrij van obstakels?' },
-          { id: 'w03', text: 'Is de verluchting/ventilatie voldoende en functioneel?' },
-          { id: 'w04', text: 'Is het sprinklersysteem (laadkade / hal, indien aanwezig) visueel in orde en vrij van obstructie?' },
-          { id: 'w05', text: 'Zijn de blusaerosolen (magazijn en batterijlaadzone) vrij van obstakels, met minimaal 1m vrije ruimte rond de laadbakken?' },
-          { id: 'w06', text: 'Zijn stellingen stabiel, onbeschadigd en correct belast?' },
-          { id: 'w07', text: 'Is de vloer vrij van lekken, schade of obstakels?' },
-          { id: 'w08', text: 'Is het onderhoud van technische installaties (sprinkler, ventilatie, verlichting) up-to-date?' }
+          { id: 'w01', num: '1a', text: 'Zijn nooduitgangen vrij en duidelijk gemarkeerd?' },
+          { id: 'w02', num: '1b', text: 'Zijn doorgangen en vluchtwegen vrij van obstakels?' },
+          { id: 'w03', num: '1c', text: 'Is de verluchting/ventilatie voldoende en functioneel?' },
+          { id: 'w04', num: '1d', text: 'Is het sprinklersysteem (laadkade / hal, indien aanwezig) visueel in orde en vrij van obstructie?' },
+          { id: 'w05', num: '1e', text: 'Zijn de blusaerosolen (magazijn en batterijlaadzone) vrij van obstakels, met minimaal 1m vrije ruimte rond de laadbakken?' },
+          { id: 'w06', num: '1f', text: 'Zijn stellingen stabiel, onbeschadigd en correct belast?' },
+          { id: 'w07', num: '1g', text: 'Is de vloer vrij van lekken, schade of obstakels?' },
+          { id: 'w08', num: '1h', text: 'Is het onderhoud van technische installaties (sprinkler, ventilatie, verlichting) up-to-date?' }
         ]
       },
       {
-        name: 'Opslag & etikettering',
+        name: '2. Opslag & etikettering',
         questions: [
-          { id: 'w09', text: 'Zijn producten correct gestapeld conform de stapelvoorschriften?' },
-          { id: 'w10', text: 'Zijn verpakkingen onbeschadigd en correct gesloten?' },
-          { id: 'w11', text: 'Zijn labels/etiketten aanwezig, leesbaar en conform SDS?' },
-          { id: 'w12', text: 'Zijn gevarenpictogrammen correct aangebracht?' },
-          { id: 'w13', text: 'Wordt de opslag conform de opslaglijst en de toegelaten hoeveelheden (Vlarem) gerespecteerd?' },
-          { id: 'w14', text: 'Zijn onverenigbare producten gescheiden van elkaar opgeslagen?', hint: 'Voer hiervoor de steekproef van min. 3 producten hieronder in (UN-nr, gevaar CLP, opmerking).' },
-          { id: 'w15', text: 'Is de zone lege verpakkingen correct afgescheiden en opgeruimd?' },
-          { id: 'w16', text: 'Is de laadkade vrij en veilig voor laad-/loshandelingen?' }
+          { id: 'w09', num: '2a', text: 'Zijn producten correct gestapeld conform de stapelvoorschriften?' },
+          { id: 'w10', num: '2b', text: 'Zijn verpakkingen onbeschadigd en correct gesloten?' },
+          { id: 'w11', num: '2c', text: 'Zijn labels/etiketten aanwezig, leesbaar en conform SDS?' },
+          { id: 'w12', num: '2d', text: 'Zijn gevarenpictogrammen correct aangebracht?' },
+          { id: 'w13', num: '2e', text: 'Wordt de opslag conform de opslaglijst en de toegelaten hoeveelheden (Vlarem) gerespecteerd?' },
+          { id: 'w14', num: '2f', text: 'Zijn onverenigbare producten gescheiden van elkaar opgeslagen?', hint: 'Voer hiervoor de steekproef van min. 3 producten hieronder in (UN-nr, gevaar CLP, opmerking).' },
+          { id: 'w15', num: '2g', text: 'Is de zone lege verpakkingen correct afgescheiden en opgeruimd?' },
+          { id: 'w16', num: '2h', text: 'Is de laadkade vrij en veilig voor laad-/loshandelingen?' }
         ]
       },
       {
-        name: 'Seveso / Vlarem conformiteit',
+        name: '3. Seveso / Vlarem conformiteit',
         questions: [
-          { id: 'w17', text: 'Wordt de Seveso-drempelhoeveelheid voor opgeslagen gevaarlijke stoffen gerespecteerd?' },
-          { id: 'w19', text: 'Is de meest recente veiligheidsstudie/risicoanalyse gekend bij het aanwezige personeel?' },
-          { id: 'w20', text: 'Zijn het noodplan en interventiedossier up-to-date en toegankelijk?' },
-          { id: 'w25', text: 'Is de steekproef van min. 5 producten volgens de opslaglijst uitgevoerd (UN-nr op de werkvloer, gevarensymbool vs. opslaglijst, vs. SDS, vs. WIK in FM)?', hint: 'Details per product: zie steekproeftabel onderaan dit formulier.' }
+          { id: 'w17', num: '3a', text: 'Wordt de Seveso-drempelhoeveelheid voor opgeslagen gevaarlijke stoffen gerespecteerd?' },
+          { id: 'w19', num: '3b', text: 'Is de meest recente veiligheidsstudie/risicoanalyse gekend bij het aanwezige personeel?' },
+          { id: 'w20', num: '3c', text: 'Zijn het noodplan en interventiedossier up-to-date en toegankelijk?' },
+          { id: 'w25', num: '3d', text: 'Is de steekproef van min. 5 producten volgens de opslaglijst uitgevoerd (UN-nr op de werkvloer, gevarensymbool vs. opslaglijst, vs. SDS, vs. WIK in FM)?', hint: 'Details per product: zie steekproeftabel onderaan dit formulier.' }
         ]
       },
       {
-        name: 'Orde, netheid & noodmiddelen',
+        name: '4. Orde, netheid & noodmiddelen',
         questions: [
-          { id: 'w21', text: 'Is er algemene orde en netheid (housekeeping) aanwezig in de hallen?' },
-          { id: 'w22', text: 'Zijn blusmiddelen aanwezig, gekeurd en bereikbaar?' },
-          { id: 'w23', text: 'Is het personeel op de hoogte van de noodprocedure bij incident/lekkage?' },
-          { id: 'w24', text: "Zijn PBM's voor magazijnpersoneel aanwezig en worden ze effectief gebruikt?" }
+          { id: 'w21', num: '4a', text: 'Is er algemene orde en netheid (housekeeping) aanwezig in de hallen?' },
+          { id: 'w22', num: '4b', text: 'Zijn blusmiddelen aanwezig, gekeurd en bereikbaar?' },
+          { id: 'w23', num: '4c', text: 'Is het personeel op de hoogte van de noodprocedure bij incident/lekkage?' },
+          { id: 'w24', num: '4d', text: "Zijn PBM's voor magazijnpersoneel aanwezig en worden ze effectief gebruikt?" }
         ]
       }
     ]
@@ -231,10 +237,10 @@ const QHSE_CHECKLISTS = [
     color: '#3a7d44',
     docControl: {
       code: 'WPI_ALG_001',
-      naam: 'Henk Driessen',
-      rev: '01-05-2025',
-      versie: '1.0',
-      beheerder: 'QHSE manager',
+      naam: 'Hamdaoui Abdelkerim',
+      rev: '1-08-2026',
+      versie: '1.3',
+      beheerder: 'QHSE advisor',
       docTitle: 'Checklist WPI Maandronden'
     },
     sample: false,
@@ -247,67 +253,67 @@ const QHSE_CHECKLISTS = [
       {
         name: '1. Arbeidsveiligheid',
         questions: [
-          { id: 'g01', text: 'Zijn machines en installaties voorzien van de nodige veiligheidsvoorzieningen (afschermingen, noodstop)?' },
-          { id: 'g02', text: 'Zijn vluchtwegen en nooduitgangen vrij en gemarkeerd?' },
-          { id: 'g03', text: 'Is er een actuele risicoanalyse beschikbaar voor deze werkplek?' },
-          { id: 'g25', text: 'Zijn installaties en machines gekeurd en worden ze onderhouden?' },
-          { id: 'g26', text: 'Zijn er defecte machines of installaties gemeld?' },
-          { id: 'g27', text: 'Zijn er defecten aan gebouw, terrein of afsluiting?' }
+          { id: 'g01', num: '1a', text: 'Zijn machines en installaties voorzien van de nodige veiligheidsvoorzieningen (afschermingen, noodstop)?' },
+          { id: 'g02', num: '1b', text: 'Zijn vluchtwegen en nooduitgangen vrij en gemarkeerd?' },
+          { id: 'g03', num: '1c', text: 'Is er een actuele risicoanalyse beschikbaar voor deze werkplek?' },
+          { id: 'g25', num: '1d', text: 'Zijn installaties en machines gekeurd en worden ze onderhouden?' },
+          { id: 'g26', num: '1e', text: 'Zijn er defecte machines of installaties gemeld?' },
+          { id: 'g27', num: '1f', text: 'Zijn er defecten aan gebouw, terrein of afsluiting?' }
         ]
       },
       {
         name: '2. Bescherming van de gezondheid van de werknemer',
         questions: [
-          { id: 'g04', text: 'Worden periodieke medische onderzoeken (waar vereist) tijdig uitgevoerd?' },
-          { id: 'g05', text: 'Is er voldoende toegang tot eerste hulp (EHBO-koffer, EHBO-verantwoordelijke)?' },
-          { id: 'g06', text: 'Worden blootstellingsrisico\'s (lawaai, stof, chemicaliën) opgevolgd?' }
+          { id: 'g04', num: '2a', text: 'Worden periodieke medische onderzoeken (waar vereist) tijdig uitgevoerd?' },
+          { id: 'g05', num: '2b', text: 'Is er voldoende toegang tot eerste hulp (EHBO-koffer, EHBO-verantwoordelijke)?' },
+          { id: 'g06', num: '2c', text: 'Worden blootstellingsrisico\'s (lawaai, stof, chemicaliën) opgevolgd?' }
         ]
       },
       {
         name: '3. Psychosociale belasting',
         questions: [
-          { id: 'g07', text: 'Is de vertrouwenspersoon/preventieadviseur psychosociaal gekend bij het personeel?' },
-          { id: 'g08', text: 'Zijn er signalen van werkstress, ongewenst gedrag of burn-out die opvolging vereisen?' },
-          { id: 'g09', text: 'Is de werkdruk op deze werkplek volgens het personeel beheersbaar?' }
+          { id: 'g07', num: '3a', text: 'Is de vertrouwenspersoon/preventieadviseur psychosociaal gekend bij het personeel?' },
+          { id: 'g08', num: '3b', text: 'Zijn er signalen van werkstress, ongewenst gedrag of burn-out die opvolging vereisen?' },
+          { id: 'g09', num: '3c', text: 'Is de werkdruk op deze werkplek volgens het personeel beheersbaar?' }
         ]
       },
       {
         name: '4. Ergonomie',
         questions: [
-          { id: 'g10', text: 'Zijn werkposten ergonomisch ingericht (zithoogte, tilhulpmiddelen, beeldschermwerk)?' },
-          { id: 'g11', text: 'Worden manuele hanteringen (tillen, dragen) uitgevoerd volgens de juiste tiltechniek?' },
-          { id: 'g12', text: 'Zijn hulpmiddelen (transpalletwagens, hijsmiddelen) beschikbaar waar nodig?' }
+          { id: 'g10', num: '4a', text: 'Zijn werkposten ergonomisch ingericht (zithoogte, tilhulpmiddelen, beeldschermwerk)?' },
+          { id: 'g11', num: '4b', text: 'Worden manuele hanteringen (tillen, dragen) uitgevoerd volgens de juiste tiltechniek?' },
+          { id: 'g12', num: '4c', text: 'Zijn hulpmiddelen (transpalletwagens, hijsmiddelen) beschikbaar waar nodig?' }
         ]
       },
       {
         name: '5. Arbeidshygiëne',
         questions: [
-          { id: 'g13', text: 'Zijn sanitaire voorzieningen (toiletten, wasgelegenheid) proper en toegankelijk?' },
-          { id: 'g14', text: 'Is er voldoende verlichting en verluchting op de werkplek?' },
-          { id: 'g15', text: 'Wordt blootstelling aan gevaarlijke stoffen beperkt via technische/organisatorische maatregelen?' }
+          { id: 'g13', num: '5a', text: 'Zijn sanitaire voorzieningen (toiletten, wasgelegenheid) proper en toegankelijk?' },
+          { id: 'g14', num: '5b', text: 'Is er voldoende verlichting en verluchting op de werkplek?' },
+          { id: 'g15', num: '5c', text: 'Wordt blootstelling aan gevaarlijke stoffen beperkt via technische/organisatorische maatregelen?' }
         ]
       },
       {
         name: '6. Verfraaiing van de werkplekken',
         questions: [
-          { id: 'g16', text: 'Is de werkplek algemeen net, opgeruimd en verzorgd?' },
-          { id: 'g17', text: 'Zijn pauzeruimtes aangenaam en functioneel ingericht?' }
+          { id: 'g16', num: '6a', text: 'Is de werkplek algemeen net, opgeruimd en verzorgd?' },
+          { id: 'g17', num: '6b', text: 'Zijn pauzeruimtes aangenaam en functioneel ingericht?' }
         ]
       },
       {
         name: '7. Milieu (bedrijfsinterne en externe milieubescherming)',
         questions: [
-          { id: 'g18', text: 'Wordt afval correct gesorteerd en gestockeerd?' },
-          { id: 'g19', text: 'Worden lekken/morsingen op een milieuveilige manier opgevangen en verwerkt?' }
+          { id: 'g18', num: '7a', text: 'Wordt afval correct gesorteerd en gestockeerd?' },
+          { id: 'g19', num: '7b', text: 'Worden lekken/morsingen op een milieuveilige manier opgevangen en verwerkt?' }
         ]
       },
       {
-        name: "Taken, rollen & PBM's van het personeel",
+        name: "8. Taken, rollen & PBM's van het personeel",
         questions: [
-          { id: 'g21', text: 'Kent het personeel zijn taken en verantwoordelijkheden inzake welzijn op het werk?' },
-          { id: 'g22', text: 'Is er een aangeduide preventieadviseur/EHBO-verantwoordelijke gekend op de werkvloer?' },
-          { id: 'g23', text: "Worden de voorgeschreven PBM's door het personeel effectief en correct gedragen?" },
-          { id: 'g24', text: 'Hebben de werknemers de nodige opleiding/instructie gekregen voor hun taak?' }
+          { id: 'g21', num: '8a', text: 'Kent het personeel zijn taken en verantwoordelijkheden inzake welzijn op het werk?' },
+          { id: 'g22', num: '8b', text: 'Is er een aangeduide preventieadviseur/EHBO-verantwoordelijke gekend op de werkvloer?' },
+          { id: 'g23', num: '8c', text: "Worden de voorgeschreven PBM's door het personeel effectief en correct gedragen?" },
+          { id: 'g24', num: '8d', text: 'Hebben de werknemers de nodige opleiding/instructie gekregen voor hun taak?' }
         ]
       }
     ]
@@ -323,10 +329,10 @@ const QHSE_CHECKLISTS = [
     color: '#a12a2a',
     docControl: {
       code: 'WPI_ADR',
-      naam: 'Henk Driessen',
-      rev: '01-05-2025',
-      versie: '1.0',
-      beheerder: 'QHSE manager',
+      naam: 'Hamdaoui Abdelkerim',
+      rev: '1-08-2026',
+      versie: '1.3',
+      beheerder: 'QHSE advisor',
       docTitle: 'Checklist WPI ADR'
     },
     sample: false,
@@ -338,48 +344,48 @@ const QHSE_CHECKLISTS = [
     ],
     sections: [
       {
-        name: 'Certificaten & opleiding',
+        name: '1. Certificaten & opleiding',
         questions: [
-          { id: 'a01', text: 'Is het ADR-certificaat van de chauffeur/engineer geldig en aanwezig?' },
-          { id: 'a02', text: 'Is het certificaat van toepassing op de vervoerde klasse(n) gevaarlijke goederen?' },
-          { id: 'a03', text: 'Heeft de chauffeur/engineer de nodige ADR-basisopleiding/bijscholing gevolgd?' }
+          { id: 'a01', num: '1a', text: 'Is het ADR-certificaat van de chauffeur/engineer geldig en aanwezig?' },
+          { id: 'a02', num: '1b', text: 'Is het certificaat van toepassing op de vervoerde klasse(n) gevaarlijke goederen?' },
+          { id: 'a03', num: '1c', text: 'Heeft de chauffeur/engineer de nodige ADR-basisopleiding/bijscholing gevolgd?' }
         ]
       },
       {
-        name: 'Documenten',
+        name: '2. Documenten',
         questions: [
-          { id: 'a04', text: 'Is het vervoersdocument (ADR) correct ingevuld en aanwezig?' },
-          { id: 'a05', text: 'Zijn de schriftelijke instructies (veiligheidsinstructiekaarten) aan boord?' },
-          { id: 'a06', text: 'Zijn de vereiste vergunningen (bv. route-, uitzonderingsvergunning) aanwezig indien van toepassing?' },
-          { id: 'a07', text: "Is het conformiteitscertificaat/keuringsbewijs van het voertuig geldig?" }
+          { id: 'a04', num: '2a', text: 'Is het vervoersdocument (ADR) correct ingevuld en aanwezig?' },
+          { id: 'a05', num: '2b', text: 'Zijn de schriftelijke instructies (veiligheidsinstructiekaarten) aan boord?' },
+          { id: 'a06', num: '2c', text: 'Zijn de vereiste vergunningen (bv. route-, uitzonderingsvergunning) aanwezig indien van toepassing?' },
+          { id: 'a07', num: '2d', text: "Is het conformiteitscertificaat/keuringsbewijs van het voertuig geldig?" }
         ]
       },
       {
-        name: 'Ladingzekering & voertuig',
+        name: '3. Ladingzekering & voertuig',
         questions: [
-          { id: 'a08', text: 'Zijn de vaten/collo\'s correct en stevig gezekerd tegen verschuiven/kantelen?' },
-          { id: 'a09', text: 'Zijn de vaten correct gestapeld en gescheiden (geen onverenigbare producten samen)?' },
-          { id: 'a10', text: 'Is het voertuig voorzien van de correcte ADR-signalisatie (oranje borden/kegels, etiketten)?' },
-          { id: 'a11', text: 'Is de laadruimte/lekbak vrij van schade en lekken?' },
-          { id: 'a12', text: 'Is het maximaal toegelaten laadgewicht/-volume gerespecteerd?' }
+          { id: 'a08', num: '3a', text: 'Zijn de vaten/collo\'s correct en stevig gezekerd tegen verschuiven/kantelen?' },
+          { id: 'a09', num: '3b', text: 'Zijn de vaten correct gestapeld en gescheiden (geen onverenigbare producten samen)?' },
+          { id: 'a10', num: '3c', text: 'Is het voertuig voorzien van de correcte ADR-signalisatie (oranje borden/kegels, etiketten)?' },
+          { id: 'a11', num: '3d', text: 'Is de laadruimte/lekbak vrij van schade en lekken?' },
+          { id: 'a12', num: '3e', text: 'Is het maximaal toegelaten laadgewicht/-volume gerespecteerd?' }
         ]
       },
       {
-        name: 'Uitrusting voertuig',
+        name: '4. Uitrusting voertuig',
         questions: [
-          { id: 'a13', text: 'Is het verplichte blusmateriaal aanwezig, gekeurd en bereikbaar?' },
-          { id: 'a14', text: 'Is de standaarduitrusting aanwezig (wielkeg, waarschuwingsdriehoek, veiligheidsvest, oogspoeling, opvangbak)?' },
-          { id: 'a15', text: 'Is de EHBO-uitrusting aan boord aanwezig en volledig?' }
+          { id: 'a13', num: '4a', text: 'Is het verplichte blusmateriaal aanwezig, gekeurd en bereikbaar?' },
+          { id: 'a14', num: '4b', text: 'Is de standaarduitrusting aanwezig (wielkeg, waarschuwingsdriehoek, veiligheidsvest, oogspoeling, opvangbak)?' },
+          { id: 'a15', num: '4c', text: 'Is de EHBO-uitrusting aan boord aanwezig en volledig?' }
         ]
       },
       {
-        name: "PBM's & vervoer naar de job",
+        name: "5. PBM's & vervoer naar de job",
         questions: [
-          { id: 'a16', text: "Draagt de chauffeur/engineer de verplichte PBM's tijdens laden/lossen/transport?" },
-          { id: 'a17', text: 'Zijn de vaten die de engineer meeneemt naar de job correct verpakt en geëtiketteerd?' },
-          { id: 'a18', text: 'Is de lading van de vaten tijdens transport naar de job correct gezekerd in het voertuig?' },
-          { id: 'a19', text: 'Is het aantal/de hoeveelheid vervoerde gevaarlijke goederen binnen de vrijstellingsgrenzen (indien van toepassing) of correct gedocumenteerd?' },
-          { id: 'a20', text: 'Is de chauffeur op de hoogte van de te volgen procedure bij een incident/ongeval tijdens transport?' }
+          { id: 'a16', num: '5a', text: "Draagt de chauffeur/engineer de verplichte PBM's tijdens laden/lossen/transport?" },
+          { id: 'a17', num: '5b', text: 'Zijn de vaten die de engineer meeneemt naar de job correct verpakt en geëtiketteerd?' },
+          { id: 'a18', num: '5c', text: 'Is de lading van de vaten tijdens transport naar de job correct gezekerd in het voertuig?' },
+          { id: 'a19', num: '5d', text: 'Is het aantal/de hoeveelheid vervoerde gevaarlijke goederen binnen de vrijstellingsgrenzen (indien van toepassing) of correct gedocumenteerd?' },
+          { id: 'a20', num: '5e', text: 'Is de chauffeur op de hoogte van de te volgen procedure bij een incident/ongeval tijdens transport?' }
         ]
       }
     ]
