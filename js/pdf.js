@@ -6,6 +6,10 @@
 const QHSE_PDF = (() => {
 
   const MARGIN = 40;
+  const MM = 2.83465; // pt per mm
+  const PHOTO_H = 60 * MM;     // vaste foto-hoogte: 60mm
+  const PHOTO_GAP = 8;         // ruimte tussen foto's
+  const PHOTOS_PER_ROW = 3;    // max. 3 foto's naast elkaar over de breedte
 
   async function build(insp, cl) {
     const { jsPDF } = window.jspdf;
@@ -15,21 +19,8 @@ const QHSE_PDF = (() => {
 
     let y = drawFirstPageHeader(doc, cl, pageWidth);
 
-    // --- Gegevens ---
-    y = ensureSpace(doc, y, 30, cl);
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(0);
-    doc.text('Gegevens', MARGIN, y); y += 14;
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
-    for (const f of cl.meta) {
-      if (f.type === 'hoses') continue; // apart weergegeven hieronder
-      let val = insp.meta[f.id];
-      if (Array.isArray(val)) val = val.join(', ');
-      const line = `${f.label}: ${val || '-'}`;
-      const split = doc.splitTextToSize(line, contentWidth);
-      y = ensureSpace(doc, y, split.length * 11, cl);
-      doc.text(split, MARGIN, y);
-      y += split.length * 11;
-    }
+    // --- Gegevens (in een kader, grotere letters, ingevulde waarden in blauw) ---
+    y = await drawMetaBox(doc, cl, insp, contentWidth, y);
 
     // --- Slangen (indien aanwezig) ---
     const hosesField = cl.meta.find(f => f.type === 'hoses');
@@ -57,17 +48,20 @@ const QHSE_PDF = (() => {
             y += nl.length * 10 + 2;
           }
           if (h.keuring === 'nok' && h.photos && h.photos.length) {
-            y = ensureSpace(doc, y, 60, cl);
+            const hosePhotoW = (contentWidth - 14 - (PHOTOS_PER_ROW - 1) * PHOTO_GAP) / PHOTOS_PER_ROW;
+            y = ensureSpace(doc, y, PHOTO_H + 10, cl);
             let x = MARGIN + 14;
+            let count = 0;
             for (const pid of h.photos) {
               const url = await QHSE_DB.getPhoto(pid);
               if (url) {
-                if (x + 68 > MARGIN + contentWidth) { x = MARGIN + 14; y += 58; }
-                try { doc.addImage(url, 'JPEG', x, y, 62, 46); } catch (e) {}
-                x += 70;
+                if (count > 0 && count % PHOTOS_PER_ROW === 0) { x = MARGIN + 14; y += PHOTO_H + PHOTO_GAP; y = ensureSpace(doc, y, PHOTO_H + 10, cl); }
+                try { doc.addImage(url, 'JPEG', x, y, hosePhotoW, PHOTO_H); } catch (e) {}
+                x += hosePhotoW + PHOTO_GAP;
+                count++;
               }
             }
-            y += 58;
+            y += PHOTO_H + 12;
           }
         }
         y += 6;
@@ -114,6 +108,19 @@ const QHSE_PDF = (() => {
       y += 75;
     }
 
+    // --- Samenvatting van alle NOK-opmerkingen (nummer + opmerking) ---
+    const nokRows = [];
+    for (const sec of cl.sections) {
+      for (const q of sec.questions) {
+        const a = insp.answers[q.id] || {};
+        if (a.status === 'NOK') nokRows.push([q.num || '-', a.note || '-']);
+      }
+    }
+    if (nokRows.length) {
+      y = ensureSpace(doc, y, 40, cl);
+      y = autoTableSection(doc, 'Samenvatting opmerkingen NOK', ['Vraag', 'Opmerking'], nokRows, y, cl);
+    }
+
     // --- Footer / paginanummers op alle pagina's ---
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
@@ -132,9 +139,52 @@ const QHSE_PDF = (() => {
   }
 
   /* -------------------------------------------------------------------
-     Blok voor één vraag: nummer+tekst, status, keuzevakjes, opmerking,
-     en de foto('s) altijd ONDER de opmerking van diezelfde vraag.
+     "Gegevens"-kader: volle breedte, groter lettertype, ingevulde
+     waarden in blauw — professionele, direct leesbare koptabel.
   ------------------------------------------------------------------- */
+  async function drawMetaBox(doc, cl, insp, contentWidth, y) {
+    const labelSize = 10.5, lineHeight = 17, padding = 12;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(0);
+    y = ensureSpace(doc, y, 20, cl);
+    doc.text('Gegevens', MARGIN, y);
+    y += 8;
+
+    // Bereken vooraf hoeveel regels elk veld nodig heeft (waarden kunnen wrappen)
+    const fields = cl.meta.filter(f => f.type !== 'hoses');
+    doc.setFontSize(labelSize);
+    const rows = fields.map(f => {
+      let val = insp.meta[f.id];
+      if (Array.isArray(val)) val = val.join(', ');
+      val = val || '-';
+      const labelText = f.label + ':  ';
+      doc.setFont('helvetica', 'bold');
+      const labelW = doc.getTextWidth(labelText);
+      doc.setFont('helvetica', 'normal');
+      const valueLines = doc.splitTextToSize(String(val), contentWidth - padding * 2 - labelW);
+      return { labelText, labelW, valueLines };
+    });
+    const totalLines = rows.reduce((sum, r) => sum + r.valueLines.length, 0);
+    const boxHeight = totalLines * lineHeight + padding * 2;
+
+    y = ensureSpace(doc, y, boxHeight + 10, cl);
+    const boxTop = y;
+    doc.setDrawColor(170); doc.setLineWidth(0.75);
+    doc.rect(MARGIN, boxTop, contentWidth, boxHeight);
+
+    let ly = boxTop + padding + labelSize - 1;
+    doc.setFontSize(labelSize);
+    for (const r of rows) {
+      doc.setFont('helvetica', 'bold'); doc.setTextColor(0);
+      doc.text(r.labelText, MARGIN + padding, ly);
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(30, 70, 200); // blauw voor ingevulde waarden
+      doc.text(r.valueLines, MARGIN + padding + r.labelW, ly);
+      ly += r.valueLines.length * lineHeight;
+    }
+    doc.setTextColor(0); doc.setDrawColor(0);
+    return boxTop + boxHeight + 22;
+  }
+
+
   async function drawQuestionBlock(doc, q, a, contentWidth, y, cl) {
     y = ensureSpace(doc, y, 40, cl);
 
@@ -186,17 +236,20 @@ const QHSE_PDF = (() => {
     }
 
     if (a.photos && a.photos.length) {
-      y = ensureSpace(doc, y, 62, cl);
+      const photoW = (contentWidth - (PHOTOS_PER_ROW - 1) * PHOTO_GAP) / PHOTOS_PER_ROW;
+      y = ensureSpace(doc, y, PHOTO_H + 10, cl);
       let x2 = MARGIN;
+      let count = 0;
       for (const pid of a.photos) {
         const dataUrl = await QHSE_DB.getPhoto(pid);
         if (dataUrl) {
-          if (x2 + 76 > MARGIN + contentWidth) { x2 = MARGIN; y += 60; y = ensureSpace(doc, y, 62, cl); }
-          try { doc.addImage(dataUrl, 'JPEG', x2, y, 70, 52); } catch (e) {}
-          x2 += 78;
+          if (count > 0 && count % PHOTOS_PER_ROW === 0) { x2 = MARGIN; y += PHOTO_H + PHOTO_GAP; y = ensureSpace(doc, y, PHOTO_H + 10, cl); }
+          try { doc.addImage(dataUrl, 'JPEG', x2, y, photoW, PHOTO_H); } catch (e) {}
+          x2 += photoW + PHOTO_GAP;
+          count++;
         }
       }
-      y += 60;
+      y += PHOTO_H + 12;
     }
 
     y = ensureSpace(doc, y, 10, cl);
